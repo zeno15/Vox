@@ -15,6 +15,8 @@ out vec3 ex_Color;
 void main(void) {
 
 	gl_Position = mvp * vec4(in_Position, 1.0f);
+
 	ex_Color = in_Color;
+
 	gl_TexCoord[0].xy = in_TexUV;
 }

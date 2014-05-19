@@ -4,13 +4,21 @@
 #include <SFML/OpenGL.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
+#include <iostream>
+#include <locale>
+#include <string>
+#include <sstream>
+#include <algorithm>
+#include <iterator>
+#include <cstring>
+
 #include "ChunkManager.hpp"
 
 int main()
 {
 	sf::ContextSettings settings = sf::ContextSettings(24, 8, 0, 4, 3);
 
-	sf::Window window(sf::VideoMode(1280, 720), "Vox v0.0", sf::Style::Default, settings);
+	sf::Window window(sf::VideoMode(1440, 900), "Vox v0.0", sf::Style::Default, settings);
 
 	const GLubyte *version = glGetString(GL_VERSION);
 	const GLubyte *renderer = glGetString(GL_RENDERER);
@@ -94,15 +102,13 @@ int main()
 		float x = 10.0f * sinf(angle1 * 3.14159265f / 180.0f);
 		float z = 10.0f * cosf(angle1 * 3.14159265f / 180.0f);
 
-		float mid = BLOCK_SIZE * 0.5f;
 
-		glm::mat4 proj = glm::perspective(45.0f, 16.0f / 9.0f, 1.0f, 100.0f);  //perspective projection matrix
-		glm::mat4 view = glm::lookAt(glm::vec3(0.0f, 10.0f, 10.0f), glm::vec3(mid, mid, mid), glm::vec3(0.0, 1.0, 0.0)); //view matrix
+		glm::mat4 proj = glm::perspective(45.0f, (float)window.getSize().x / (float)window.getSize().y, 1.0f, 100.0f);  //perspective projection matrix
+		glm::mat4 view = glm::lookAt(glm::vec3(0.0f, 10.0f, 10.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0, 1.0, 0.0)); //view matrix
 		glm::mat4 matrix = glm::mat4x4(1.0f);
 			
 		matrix = glm::rotate(matrix, angle1, glm::vec3(0, 1, 0));
 		matrix = glm::rotate(matrix, angle2, glm::vec3(1, 0, 0));
-		matrix = glm::translate(matrix, glm::vec3(-mid, -mid, -mid));
 
 		//glm::mat4x4 matrix = glm::mat4x4(1.0f);
 

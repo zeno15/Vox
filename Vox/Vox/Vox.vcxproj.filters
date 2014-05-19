@@ -25,6 +25,9 @@
     <Filter Include="Resource Files\Resources\Fonts">
       <UniqueIdentifier>{f0e44942-e418-4304-af7f-f5cfd0da3fd7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Resources\Data">
+      <UniqueIdentifier>{9bce9a94-bce1-4797-bd48-c3a4892750a3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -42,6 +45,9 @@
     <ClCompile Include="ChunkManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DataManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Shader.hpp">
@@ -56,13 +62,19 @@
     <ClInclude Include="ChunkManager.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DataManager.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Shaders\vert.glsl">
-      <Filter>Resource Files\Resources\Shaders</Filter>
-    </None>
     <None Include="Resources\Shaders\frag.glsl">
       <Filter>Resource Files\Resources\Shaders</Filter>
+    </None>
+    <None Include="Resources\Shaders\vert.glsl">
+      <Filter>Resource Files\Resources\Shaders</Filter>
+    </None>
+    <None Include="Resources\Data\textureCoordinateData.data">
+      <Filter>Resource Files\Resources\Data</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

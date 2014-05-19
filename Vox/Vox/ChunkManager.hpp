@@ -3,6 +3,7 @@
 
 #include "Chunk.hpp"
 #include "Shader.hpp"
+#include "DataManager.hpp"
 
 class ChunkManager
 {
@@ -15,10 +16,16 @@ public:
 
 	unsigned int getShaderId(void);
 
+	void updateMeshs(sf::Vector3f _viewVector);
+
+	DataManager *getDataManager(void);
+
 private:
 	std::vector<Chunk *> m_Chunks;
 
-	Shader			m_Shader;
+	Shader				m_Shader;
+
+	DataManager			m_Data;
 };
 
 #endif //~ INCLUDED_CHUNK_MANAGER_HPP

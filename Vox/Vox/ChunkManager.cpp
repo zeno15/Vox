@@ -34,3 +34,16 @@ unsigned int ChunkManager::getShaderId(void)
 {
 	return m_Shader.id();
 }
+
+void ChunkManager::updateMeshs(sf::Vector3f _viewVector)
+{
+	for (unsigned int i = 0; i < m_Chunks.size(); i += 1)
+	{
+		m_Chunks.at(i)->updateMesh(_viewVector);
+	}
+}
+
+DataManager *ChunkManager::getDataManager(void)
+{
+	return &m_Data;
+}
