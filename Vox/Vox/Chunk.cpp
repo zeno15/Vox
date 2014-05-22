@@ -5,8 +5,9 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 
-Chunk::Chunk(ChunkManager *_chunkManager) :
-m_ChunkManager(_chunkManager)
+Chunk::Chunk(ChunkManager *_chunkManager, sf::Vector3i _chunkCoords) :
+m_ChunkManager(_chunkManager),
+m_ChunkCoords(_chunkCoords)
 {
     // Create the blocks
     m_pBlocks = new Block**[CHUNK_SIZE];
@@ -476,4 +477,9 @@ void Chunk::createCube(int _x, int _y, int _z, std::vector<sf::Vector3f> *_verte
 		_colours->push_back(sf::Vector3f(1.0f, 0.0f, 1.0f));
 		_textureCoords->push_back(Block::getTexCoords(data->getTileSheetCoords(btype, Block::FaceIndex::TOP), Block::VertIndex::TOP_LEF));
 	}
+}
+
+sf::Vector3i Chunk::getChunkCoords(void)
+{
+	return m_ChunkCoords;
 }

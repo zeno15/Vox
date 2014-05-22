@@ -5,18 +5,14 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include <iostream>
-#include <locale>
-#include <string>
-#include <sstream>
-#include <algorithm>
-#include <iterator>
-#include <cstring>
 
+#include "Text.hpp"
+#include "Camera.hpp"
 #include "ChunkManager.hpp"
 
 int main()
 {
-	sf::ContextSettings settings = sf::ContextSettings(24, 8, 0, 4, 3);
+	sf::ContextSettings settings = sf::ContextSettings(24, 8, 16, 4, 3);
 
 	sf::Window window(sf::VideoMode(1440, 900), "Vox v0.0", sf::Style::Default, settings);
 
@@ -33,97 +29,35 @@ int main()
 	std::cout << "OpenGL vendor: " << vendor << std::endl;
 	std::cout << "OpenGL renderer: " << renderer << std::endl;
 
+	window.setFramerateLimit(60);
+
 	glewInit();
 	
 	glClearColor(0.4f, 0.6f, 0.9f, 0.0f);
 	glEnable(GL_DEPTH_TEST);
-
-	ChunkManager chunkMan = ChunkManager();
-
-	GLuint mvID = glGetUniformLocation(chunkMan.getShaderId(), "mv");
-	GLuint mvpID = glGetUniformLocation(chunkMan.getShaderId(), "mvp");
-	GLuint norID = glGetUniformLocation(chunkMan.getShaderId(), "nor");
-	GLuint lightID = glGetUniformLocation(chunkMan.getShaderId(), "light");
-
-	sf::Texture tex;
-	tex.loadFromFile("Resources/Textures/testcube.png");
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
 	
+	Camera cam = Camera(window.getSize());
+	ChunkManager chunkMan = ChunkManager(&cam);
+
 	sf::Clock clock;
 
-	glm::vec4 pos = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
-	glm::vec4 dir = glm::vec4(1.0f, 1.0f, 1.0f, 0.0f);
-
-	std::vector<float> lightPos(3, 10.0f);
+	Text text = Text(&cam, "", 0, 0);
 
 	bool running = true;
 
+	bool F1 = false;
+
     while (running)
     {
-		sf::sleep(sf::milliseconds(10));
-
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-		{
-			//~ Forward along x-z component of view direction
-			glm::vec3 tempPos = glm::vec3(dir.x, 0.0f, dir.z) * clock.getElapsedTime().asSeconds() * 10.0f;
-
-			pos += glm::vec4(tempPos.x, tempPos.y, tempPos.z, 1.0f);
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-		{
-			//~ Left along orthogonal to x-z component of view direction
-			glm::vec3 tempPos = glm::cross(glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(dir.x, 0.0f, dir.z)) * clock.getElapsedTime().asSeconds() * 10.0f;
-
-			pos += glm::vec4(tempPos.x, tempPos.y, tempPos.z, 1.0f);
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-		{
-			//~ Back along x-z component of view direction
-			glm::vec3 tempPos = glm::vec3(dir.x, 0.0f, dir.z) * clock.getElapsedTime().asSeconds() * 10.0f;
-
-			pos -= glm::vec4(tempPos.x, tempPos.y, tempPos.z, 1.0f);
-
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-		{
-			//~ Right along orthogonal to x-z component of view direction
-			glm::vec3 tempPos = glm::cross(glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(dir.x, 0.0f, dir.z)) * clock.getElapsedTime().asSeconds() * 10.0f;
-
-			pos -= glm::vec4(tempPos.x, tempPos.y, tempPos.z, 1.0f);
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
-		{
-			//~ Up along  y axis
-			glm::vec3 tempPos = glm::vec3(0.0f, dir.y, 0.0f) * clock.getElapsedTime().asSeconds() * 10.0f;
-
-			pos += glm::vec4(tempPos.x, tempPos.y, tempPos.z, 1.0f);
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
-		{
-			//~ Down along y axis
-			glm::vec3 tempPos = glm::vec3(0.0f, dir.y, 0.0f) * clock.getElapsedTime().asSeconds() * 10.0f;
-
-			pos -= glm::vec4(tempPos.x, tempPos.y, tempPos.z, 1.0f);
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-		{
-			dir = glm::rotate(glm::mat4x4(1.0f), 1.0f, glm::cross(glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(dir.x, 0.0f, dir.z))) * dir;
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-		{
-			dir = glm::rotate(glm::mat4x4(1.0f), -1.0f, glm::cross(glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(dir.x, 0.0f, dir.z))) * dir;
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-		{
-			dir = glm::rotate(glm::mat4x4(1.0f), 1.0f, glm::vec3(0.0f, 1.0f, 0.0f)) * dir;
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-		{
-			dir = glm::rotate(glm::mat4x4(1.0f), -1.0f, glm::vec3(0.0f, 1.0f, 0.0f)) * dir;
-		}
+		cam.update(clock.getElapsedTime().asSeconds());
 
 		chunkMan.update(clock.getElapsedTime().asSeconds());
 
-		clock.restart().asSeconds();
+		text.update("FPS:" + std::to_string(static_cast<int>(1.0f / clock.getElapsedTime().asSeconds())) + "\nX:" + std::to_string(static_cast<int>(cam.getPosition().x)) + "\nY:" + std::to_string(static_cast<int>(cam.getPosition().y)) + "\nZ:" + std::to_string(static_cast<int>(cam.getPosition().z)));
+
+		clock.restart();
 
         sf::Event event;
         while (window.pollEvent(event))
@@ -135,32 +69,21 @@ int main()
             else if (event.type == sf::Event::Resized)
             {
                 glViewport(0, 0, event.size.width, event.size.height);
+				cam.updateWindowSize(sf::Vector2u(event.size.width, event.size.height));
             }
+			else if (event.type == sf::Event::KeyPressed)
+			{
+				if (event.key.code == sf::Keyboard::F1)
+				{
+					text.toggle();
+				}
+			}
         }
         // clear the buffers
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-
-		glm::mat4 proj = glm::perspective(60.0f, (float)window.getSize().x / (float)window.getSize().y, 1.0f, 100.0f);  //perspective projection matrix
-		glm::mat4 view = glm::lookAt(glm::vec3(pos),  glm::vec3(pos) + glm::vec3(dir), glm::vec3(0.0, 1.0, 0.0)); //view matrix
-		glm::mat4 matrix = glm::mat4x4(1.0f);
-			
-
-
-
-		glm::mat4x4 mv, mvp, nor;
-
-		mv = view * glm::mat4x4(1.0f);
-		mvp = proj * mv;
-		nor = glm::inverse(mv);
-
-		glUniformMatrix4fv(mvID, 1, GL_FALSE, &mv[0][0]);
-		glUniformMatrix4fv(mvpID, 1, GL_FALSE, &mvp[0][0]);
-		glUniformMatrix4fv(norID, 1, GL_TRUE, &nor[0][0]);
-
-		glUniform3fv(lightID, 1, &lightPos[0]);
-		sf::Texture::bind(&tex);
 		chunkMan.render();
+		text.render();
 
         window.display();
     }

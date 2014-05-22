@@ -14,7 +14,7 @@ class ChunkManager;
 class Chunk
 {
 public:
-    Chunk(ChunkManager *_chunkManager);
+    Chunk(ChunkManager *_chunkManager, sf::Vector3i _chunkCoords);
     ~Chunk();
 
     void Update(float _dt);
@@ -26,7 +26,7 @@ public:
 	void createMesh(void);
 	void createCube(int _x, int _y, int _z, std::vector<sf::Vector3f> *_vertexes, std::vector<sf::Vector3f> *_normals, std::vector<sf::Vector3f> *_colours, std::vector<sf::Vector2f> *_textureCoords);
 
-	
+	sf::Vector3i getChunkCoords(void);
 
     static const int CHUNK_SIZE = 16;
 private:
@@ -40,6 +40,8 @@ private:
 	ChunkManager *					m_ChunkManager;
 
 	std::vector<unsigned int>		m_Indexes;
+
+	sf::Vector3i					m_ChunkCoords;
 };
 
 #endif //~ INCLUDED_CHUNK_HPP

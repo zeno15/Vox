@@ -85,24 +85,28 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Block.cpp" />
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Chunk.cpp" />
     <ClCompile Include="ChunkManager.cpp" />
     <ClCompile Include="DataManager.cpp" />
-    <ClCompile Include="Font.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="Text.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Block.hpp" />
+    <ClInclude Include="Camera.hpp" />
     <ClInclude Include="Chunk.hpp" />
     <ClInclude Include="ChunkManager.hpp" />
     <ClInclude Include="DataManager.hpp" />
-    <ClInclude Include="Font.hpp" />
     <ClInclude Include="Shader.hpp" />
+    <ClInclude Include="Text.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Data\textureCoordinateData.data" />
     <None Include="Resources\Shaders\frag.glsl" />
+    <None Include="Resources\Shaders\textFrag.glsl" />
+    <None Include="Resources\Shaders\textVert.glsl" />
     <None Include="Resources\Shaders\vert.glsl" />
   </ItemGroup>
   <ItemGroup>

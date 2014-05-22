@@ -48,7 +48,10 @@
     <ClCompile Include="DataManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Font.cpp">
+    <ClCompile Include="Text.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -68,7 +71,10 @@
     <ClInclude Include="DataManager.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Font.hpp">
+    <ClInclude Include="Text.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -81,6 +87,12 @@
     </None>
     <None Include="Resources\Data\textureCoordinateData.data">
       <Filter>Resource Files\Resources\Data</Filter>
+    </None>
+    <None Include="Resources\Shaders\textFrag.glsl">
+      <Filter>Resource Files\Resources\Shaders</Filter>
+    </None>
+    <None Include="Resources\Shaders\textVert.glsl">
+      <Filter>Resource Files\Resources\Shaders</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
