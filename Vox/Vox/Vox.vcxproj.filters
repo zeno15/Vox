@@ -48,6 +48,9 @@
     <ClCompile Include="DataManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Font.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Shader.hpp">
@@ -65,6 +68,9 @@
     <ClInclude Include="DataManager.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Font.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\frag.glsl">
@@ -80,6 +86,9 @@
   <ItemGroup>
     <Image Include="Resources\Textures\testcube.png">
       <Filter>Resource Files\Resources\Textures</Filter>
+    </Image>
+    <Image Include="Resources\Fonts\freemono.png">
+      <Filter>Resource Files\Resources\Fonts</Filter>
     </Image>
   </ItemGroup>
 </Project>

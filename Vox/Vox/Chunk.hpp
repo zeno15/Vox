@@ -28,7 +28,7 @@ public:
 
 	
 
-    static const int CHUNK_SIZE = 8;
+    static const int CHUNK_SIZE = 16;
 private:
     // The blocks data
     Block***						m_pBlocks;

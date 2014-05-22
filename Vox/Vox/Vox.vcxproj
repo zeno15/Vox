@@ -88,6 +88,7 @@
     <ClCompile Include="Chunk.cpp" />
     <ClCompile Include="ChunkManager.cpp" />
     <ClCompile Include="DataManager.cpp" />
+    <ClCompile Include="Font.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Shader.cpp" />
   </ItemGroup>
@@ -96,6 +97,7 @@
     <ClInclude Include="Chunk.hpp" />
     <ClInclude Include="ChunkManager.hpp" />
     <ClInclude Include="DataManager.hpp" />
+    <ClInclude Include="Font.hpp" />
     <ClInclude Include="Shader.hpp" />
   </ItemGroup>
   <ItemGroup>
@@ -104,6 +106,7 @@
     <None Include="Resources\Shaders\vert.glsl" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="Resources\Fonts\freemono.png" />
     <Image Include="Resources\Textures\testcube.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

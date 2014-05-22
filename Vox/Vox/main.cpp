@@ -47,13 +47,11 @@ int main()
 
 	sf::Texture tex;
 	tex.loadFromFile("Resources/Textures/testcube.png");
-
-	sf::Texture::bind(&tex);
 	
 	sf::Clock clock;
 
-	float angle1 = 0.0f;
-	float angle2 = 0.0f;
+	glm::vec4 pos = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+	glm::vec4 dir = glm::vec4(1.0f, 1.0f, 1.0f, 0.0f);
 
 	std::vector<float> lightPos(3, 10.0f);
 
@@ -63,21 +61,64 @@ int main()
     {
 		sf::sleep(sf::milliseconds(10));
 
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 		{
-			angle1 -= 100.0f * clock.getElapsedTime().asSeconds();
+			//~ Forward along x-z component of view direction
+			glm::vec3 tempPos = glm::vec3(dir.x, 0.0f, dir.z) * clock.getElapsedTime().asSeconds() * 10.0f;
+
+			pos += glm::vec4(tempPos.x, tempPos.y, tempPos.z, 1.0f);
 		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 		{
-			angle1 += 100.0f * clock.getElapsedTime().asSeconds();
+			//~ Left along orthogonal to x-z component of view direction
+			glm::vec3 tempPos = glm::cross(glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(dir.x, 0.0f, dir.z)) * clock.getElapsedTime().asSeconds() * 10.0f;
+
+			pos += glm::vec4(tempPos.x, tempPos.y, tempPos.z, 1.0f);
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+		{
+			//~ Back along x-z component of view direction
+			glm::vec3 tempPos = glm::vec3(dir.x, 0.0f, dir.z) * clock.getElapsedTime().asSeconds() * 10.0f;
+
+			pos -= glm::vec4(tempPos.x, tempPos.y, tempPos.z, 1.0f);
+
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+		{
+			//~ Right along orthogonal to x-z component of view direction
+			glm::vec3 tempPos = glm::cross(glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(dir.x, 0.0f, dir.z)) * clock.getElapsedTime().asSeconds() * 10.0f;
+
+			pos -= glm::vec4(tempPos.x, tempPos.y, tempPos.z, 1.0f);
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
+		{
+			//~ Up along  y axis
+			glm::vec3 tempPos = glm::vec3(0.0f, dir.y, 0.0f) * clock.getElapsedTime().asSeconds() * 10.0f;
+
+			pos += glm::vec4(tempPos.x, tempPos.y, tempPos.z, 1.0f);
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
+		{
+			//~ Down along y axis
+			glm::vec3 tempPos = glm::vec3(0.0f, dir.y, 0.0f) * clock.getElapsedTime().asSeconds() * 10.0f;
+
+			pos -= glm::vec4(tempPos.x, tempPos.y, tempPos.z, 1.0f);
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 		{
-			angle2 -= 100.0f * clock.getElapsedTime().asSeconds();
+			dir = glm::rotate(glm::mat4x4(1.0f), 1.0f, glm::cross(glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(dir.x, 0.0f, dir.z))) * dir;
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 		{
-			angle2 += 100.0f * clock.getElapsedTime().asSeconds();
+			dir = glm::rotate(glm::mat4x4(1.0f), -1.0f, glm::cross(glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(dir.x, 0.0f, dir.z))) * dir;
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+		{
+			dir = glm::rotate(glm::mat4x4(1.0f), 1.0f, glm::vec3(0.0f, 1.0f, 0.0f)) * dir;
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+		{
+			dir = glm::rotate(glm::mat4x4(1.0f), -1.0f, glm::vec3(0.0f, 1.0f, 0.0f)) * dir;
 		}
 
 		chunkMan.update(clock.getElapsedTime().asSeconds());
@@ -99,22 +140,17 @@ int main()
         // clear the buffers
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		float x = 10.0f * sinf(angle1 * 3.14159265f / 180.0f);
-		float z = 10.0f * cosf(angle1 * 3.14159265f / 180.0f);
 
-
-		glm::mat4 proj = glm::perspective(45.0f, (float)window.getSize().x / (float)window.getSize().y, 1.0f, 100.0f);  //perspective projection matrix
-		glm::mat4 view = glm::lookAt(glm::vec3(0.0f, 10.0f, 10.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0, 1.0, 0.0)); //view matrix
+		glm::mat4 proj = glm::perspective(60.0f, (float)window.getSize().x / (float)window.getSize().y, 1.0f, 100.0f);  //perspective projection matrix
+		glm::mat4 view = glm::lookAt(glm::vec3(pos),  glm::vec3(pos) + glm::vec3(dir), glm::vec3(0.0, 1.0, 0.0)); //view matrix
 		glm::mat4 matrix = glm::mat4x4(1.0f);
 			
-		matrix = glm::rotate(matrix, angle1, glm::vec3(0, 1, 0));
-		matrix = glm::rotate(matrix, angle2, glm::vec3(1, 0, 0));
 
-		//glm::mat4x4 matrix = glm::mat4x4(1.0f);
+
 
 		glm::mat4x4 mv, mvp, nor;
 
-		mv = view * matrix;
+		mv = view * glm::mat4x4(1.0f);
 		mvp = proj * mv;
 		nor = glm::inverse(mv);
 
@@ -123,7 +159,7 @@ int main()
 		glUniformMatrix4fv(norID, 1, GL_TRUE, &nor[0][0]);
 
 		glUniform3fv(lightID, 1, &lightPos[0]);
-
+		sf::Texture::bind(&tex);
 		chunkMan.render();
 
         window.display();
