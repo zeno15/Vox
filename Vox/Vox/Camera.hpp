@@ -10,18 +10,21 @@
 class Camera
 {
 public:
-	Camera(sf::Vector2u _windowSize);
+	Camera(const sf::Window *_window);
 	~Camera();
 
 	void update(float _dt);
-	void updateWindowSize(sf::Vector2u _windowSize);
 
 	glm::vec4 getPosition(void);
 	glm::vec4 getViewDirection(void);
+	glm::vec4 getUpDirection(void);
+	glm::vec2 getRotation(void);
 
 	float getFOV(void);
 
 	sf::Vector2u getWindowSize(void);
+
+	void toggleMouseCapture(void);
 
 	glm::mat4x4 getPerspectiveMatrix(void);
 	glm::mat4x4 getOrthoMatrix(void);
@@ -29,11 +32,18 @@ public:
 
 private:
 	glm::vec4			m_Pos;
-	glm::vec4			m_Dir;
+
+	float				m_xAngle;
+	float				m_yAngle;
 
 	float				m_FOV;
 
 	sf::Vector2u		m_WindowSize;
+
+	bool				m_CursorLocked;
+
+private:
+	const sf::Window *			m_Window;
 };
 
 #endif //~ INCLUDED_CAMERA_HPP

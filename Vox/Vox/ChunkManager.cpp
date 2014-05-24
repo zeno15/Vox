@@ -12,9 +12,9 @@ m_Camera(_camera)
 	m_ChunkTexture = new sf::Texture();
 	m_ChunkTexture->loadFromFile("Resources/Textures/testcube.png");
 
-	int X = 1;
+	int X = 2;
 	int Y = 1;
-	int Z = 1;
+	int Z = 2;
 
 	for (int i = 0; i < Y; i += 1)
 	{

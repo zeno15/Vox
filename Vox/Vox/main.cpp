@@ -29,7 +29,7 @@ int main()
 	std::cout << "OpenGL vendor: " << vendor << std::endl;
 	std::cout << "OpenGL renderer: " << renderer << std::endl;
 
-	window.setFramerateLimit(60);
+	//window.setFramerateLimit(60);
 
 	glewInit();
 	
@@ -37,8 +37,10 @@ int main()
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
+
+	bool mouseVisible = true;
 	
-	Camera cam = Camera(window.getSize());
+	Camera cam = Camera(&window);
 	ChunkManager chunkMan = ChunkManager(&cam);
 
 	sf::Clock clock;
@@ -51,11 +53,13 @@ int main()
 
     while (running)
     {
+		sf::sleep(sf::milliseconds(1));
+
 		cam.update(clock.getElapsedTime().asSeconds());
 
 		chunkMan.update(clock.getElapsedTime().asSeconds());
 
-		text.update("FPS:" + std::to_string(static_cast<int>(1.0f / clock.getElapsedTime().asSeconds())) + "\nX:" + std::to_string(static_cast<int>(cam.getPosition().x)) + "\nY:" + std::to_string(static_cast<int>(cam.getPosition().y)) + "\nZ:" + std::to_string(static_cast<int>(cam.getPosition().z)));
+		text.update("FPS:" + std::to_string(static_cast<int>(1.0f / clock.getElapsedTime().asSeconds())) + "\nX:" + std::to_string(static_cast<int>(cam.getPosition().x)) + "\nY:" + std::to_string(static_cast<int>(cam.getPosition().y)) + "\nZ:" + std::to_string(static_cast<int>(cam.getPosition().z)) + "\nRotation\nX:" + std::to_string(static_cast<int>(cam.getRotation().x)) + "\nY:" + std::to_string(static_cast<int>(cam.getRotation().y)));
 
 		clock.restart();
 
@@ -69,7 +73,6 @@ int main()
             else if (event.type == sf::Event::Resized)
             {
                 glViewport(0, 0, event.size.width, event.size.height);
-				cam.updateWindowSize(sf::Vector2u(event.size.width, event.size.height));
             }
 			else if (event.type == sf::Event::KeyPressed)
 			{
@@ -77,8 +80,14 @@ int main()
 				{
 					text.toggle();
 				}
+				if (event.key.code == sf::Keyboard::Tab)
+				{
+					cam.toggleMouseCapture();
+					mouseVisible = !mouseVisible;
+					window.setMouseCursorVisible(mouseVisible);
+				}
 			}
-        }
+		}
         // clear the buffers
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
