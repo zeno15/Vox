@@ -2,8 +2,9 @@
 
 #include <iostream>
 
-Text::Text(Camera *_camera, std::string _text, unsigned int _x, unsigned int _y) :
-m_Cam(_camera),
+#include "Game.hpp"
+
+Text::Text(std::string _text, unsigned int _x, unsigned int _y) :
 m_Offset(_x, _y),
 m_Active(true)
 {
@@ -28,8 +29,8 @@ void Text::render(void)
 	m_TextShader->bind();
 	sf::Texture::bind(&m_Texture);
 
-	glm::mat4x4 proj = m_Cam->getProjectionMatrix(false);
-	glm::mat4x4 view = m_Cam->getOrthoMatrix();
+	glm::mat4x4 proj = sCamera.getProjectionMatrix(false);
+	glm::mat4x4 view = sCamera.getOrthoMatrix();
 
 	glm::mat4x4 mvp = proj * view;
 
@@ -58,7 +59,7 @@ void Text::addChar(char _ascii, std::vector<float> &_v, std::vector<float> &_t, 
 		ascii = 0;
 	}
 
-	sf::Vector2f windowSize = sf::Vector2f(static_cast<float>(m_Cam->getWindowSize().x), static_cast<float>(m_Cam->getWindowSize().y));
+	sf::Vector2f windowSize = sf::Vector2f(static_cast<float>(sCamera.getWindowSize().x), static_cast<float>(sCamera.getWindowSize().y));
 
 	float windowX = windowSize.x / size;
 	float windowY = windowSize.y / size;

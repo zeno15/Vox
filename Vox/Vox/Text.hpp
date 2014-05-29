@@ -16,7 +16,7 @@
 class Text
 {
 public:
-	Text(Camera *_camera, std::string _text, unsigned int _x, unsigned int _y);
+	Text(std::string _text, unsigned int _x, unsigned int _y);
 	~Text();
 
 	void render(void);
@@ -34,8 +34,6 @@ private:
 	unsigned int		m_NumberVertices;
 
 	Shader *			m_TextShader;
-
-	Camera *			m_Cam;
 
 	sf::Texture			m_Texture;
 

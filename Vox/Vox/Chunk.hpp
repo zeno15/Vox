@@ -21,10 +21,14 @@ public:
 
     void Render();
 
-	
 	void updateMesh(sf::Vector3f _viewVector);
+	void updateIndexes(void);
 	void createMesh(void);
-	void createCube(int _x, int _y, int _z, std::vector<sf::Vector3f> *_vertexes, std::vector<sf::Vector3f> *_normals, std::vector<sf::Vector3f> *_colours, std::vector<sf::Vector2f> *_textureCoords);
+	void createCube(int _x, int _y, int _z, std::vector<float> *_vertexes, std::vector<float> *_normals, std::vector<float> *_colours, std::vector<float> *_textureCoords, bool _allActive = false);
+
+	void generate(void);
+
+	bool generated(void);
 
 	sf::Vector3i getChunkCoords(void);
 
@@ -42,6 +46,8 @@ private:
 	std::vector<unsigned int>		m_Indexes;
 
 	sf::Vector3i					m_ChunkCoords;
+
+	bool							m_Generated;
 };
 
 #endif //~ INCLUDED_CHUNK_HPP

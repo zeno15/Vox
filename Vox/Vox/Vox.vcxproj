@@ -89,7 +89,13 @@
     <ClCompile Include="Chunk.cpp" />
     <ClCompile Include="ChunkManager.cpp" />
     <ClCompile Include="DataManager.cpp" />
+    <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="Frustrum.cpp" />
+    <ClCompile Include="Game.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Mob.cpp" />
+    <ClCompile Include="Plane.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Text.cpp" />
   </ItemGroup>
@@ -99,12 +105,20 @@
     <ClInclude Include="Chunk.hpp" />
     <ClInclude Include="ChunkManager.hpp" />
     <ClInclude Include="DataManager.hpp" />
+    <ClInclude Include="Entity.hpp" />
+    <ClInclude Include="Frustrum.hpp" />
+    <ClInclude Include="Game.hpp" />
+    <ClInclude Include="Mob.hpp" />
+    <ClInclude Include="Plane.hpp" />
+    <ClInclude Include="Player.hpp" />
     <ClInclude Include="Shader.hpp" />
     <ClInclude Include="Text.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Data\textureCoordinateData.data" />
     <None Include="Resources\Shaders\frag.glsl" />
+    <None Include="Resources\Shaders\player.frag" />
+    <None Include="Resources\Shaders\player.vert" />
     <None Include="Resources\Shaders\textFrag.glsl" />
     <None Include="Resources\Shaders\textVert.glsl" />
     <None Include="Resources\Shaders\vert.glsl" />
@@ -112,6 +126,9 @@
   <ItemGroup>
     <Image Include="Resources\Fonts\freemono.png" />
     <Image Include="Resources\Textures\testcube.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="notes.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

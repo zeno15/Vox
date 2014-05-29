@@ -1,0 +1,6 @@
+TODO
+	-	Triangle face merging with textures
+
+	-	Indexed drawing
+
+	-	Player collision etc

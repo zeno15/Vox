@@ -2,16 +2,17 @@
 #define INCLUDED_CHUNK_MANAGER_HPP
 
 #include <SFML/Graphics.hpp>
+#include <thread>
+#include <mutex>
 
 #include "Chunk.hpp"
 #include "Shader.hpp"
 #include "DataManager.hpp"
-#include "Camera.hpp"
 
 class ChunkManager
 {
 public:
-	ChunkManager(Camera *_camera);
+	ChunkManager();
 	~ChunkManager();
 
 	void update(float _dt);
@@ -21,22 +22,42 @@ public:
 
 	void updateMeshs(sf::Vector3f _viewVector);
 
+	void threadLoadUnload(void);
+
 	DataManager *getDataManager(void);
 
+	sf::Vector2i getRenderedChunksVsAvailable(void);
+
+	sf::Vector3i getCamChunkCoords(void);
+
 private:
-	std::vector<Chunk *> m_Chunks;
+	Shader						m_Shader;
 
-	Shader				m_Shader;
+	GLuint						m_mvId;
+	GLuint						m_mvpId;
+	GLuint						m_norId;
 
-	GLuint				m_mvId;
-	GLuint				m_mvpId;
-	GLuint				m_norId;
 
-	DataManager			m_Data;
 
-	Camera *			m_Camera;
 
-	sf::Texture *		m_ChunkTexture;
+
+	std::vector<Chunk *>		m_Chunks;
+
+	std::vector<Chunk *>		m_ToUnload;
+
+	std::vector<Chunk *>		m_Load;
+
+
+
+	sf::Texture *				m_ChunkTexture;
+
+	sf::Vector2i				m_ChunkRenderingRatio;
+	
+
+
+
+
+	DataManager					m_Data;
 };
 
 #endif //~ INCLUDED_CHUNK_MANAGER_HPP
